@@ -21,17 +21,6 @@ data/processed/*
 *.arrow
 
 # ==============================
-# Machine Learning Models
-# ==============================
-models/*
-*.pkl
-*.joblib
-*.h5
-*.pt
-*.pth
-*.onnx
-
-# ==============================
 # Python Cache
 # ==============================
 __pycache__/
