@@ -1,5 +1,5 @@
 import requests
-from api import API_KEY
+from backend.api import API_KEY
 
 PROGRESS_URL = "https://api.brightdata.com/datasets/v3/progress"
 
