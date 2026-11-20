@@ -1,8 +1,15 @@
 import joblib
-from review_service import download_reviews
-from preprocessing import preprocess_text
+import __main__
+from pathlib import Path
+from backend.review_service import download_reviews
+from backend.preprocessing import clean_text, preprocess_text
 
-with open("models/model.pkl","rb") as f:
+# Register custom functions before loading the model
+__main__.clean_text = clean_text
+__main__.preprocess_text = preprocess_text
+
+
+with open("backend/models/model.pkl","rb") as f:
     model = joblib.load(f)
 
 
@@ -16,10 +23,14 @@ def predict_sentiment(reviews):
         for review in reviews
         if review.get("review_text")
     ]
+    rating = [
+        review.get("rating")
+        for review in reviews
+    ]
 
     prediction = model.predict(review_texts)
 
-    return review_texts, prediction 
+    return rating, review_texts, prediction 
 
 if __name__ == "__main__":
 
@@ -27,8 +38,8 @@ if __name__ == "__main__":
 
     reviews = download_reviews(snapshot_id)
 
-    review_texts, prediction = predict_sentiment(reviews)
+    rating, review_texts, prediction = predict_sentiment(reviews)
 
 
-    for review_text, prediction in zip(review_texts, prediction  ):
-        print("Review:", review_text, "Sentiment:", prediction)
+    for rating, review_text, prediction in zip(rating, review_texts, prediction  ):
+        print("Rating:", rating,"Review:", review_text, "Sentiment:", prediction)
