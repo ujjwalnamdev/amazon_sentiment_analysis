@@ -48,6 +48,10 @@ if st.button("Submit", type="primary"):
                 st.session_state["snapshot_id"] = snapshot_id
                 st.session_state["product_url"] = product_url
 
+                # Reset previous product analysis
+                st.session_state.pop("analysis_result", None)
+                st.session_state.pop("analysis_snapshot_id", None)
+                
                 # Navigate to dashboard
                 st.switch_page("pages/dashboard.py")
 
