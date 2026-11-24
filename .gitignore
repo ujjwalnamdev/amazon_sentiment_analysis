@@ -56,3 +56,11 @@ desktop.ini
 # Logs
 # ==============================
 *.log
+
+#jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+
+#Dataset and generated files
+.parquet
+.jsonl
