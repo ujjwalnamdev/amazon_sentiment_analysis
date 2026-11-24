@@ -1,24 +1,18 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, HttpUrl
-from backend.api import trigger_scraping
+from schema.api import trigger_scraping
 import joblib
 import __main__
-from backend.preprocessing import clean_text, preprocess_text
-from backend.review_service import(check_snapshot_status, download_reviews)
-from backend.prediction import predict_sentiment
+from schema.review_service import(check_snapshot_status, download_reviews)
+from models.prediction import predict_sentiment
 
-
-__main__.clean_text = clean_text
-__main__.preprocess_text = preprocess_text
 
 # Load ML model
-with open('backend/models/model.pkl', 'rb') as f:
+with open('models/model.pkl', 'rb') as f:
     model = joblib.load(f)
 
 #MLFlow
 MODEL_VERSION = '1.0.0'
-
-
 
 #FastAPI application
 app = FastAPI(
@@ -27,14 +21,23 @@ app = FastAPI(
     version="1.0.0"
 )
 
-@app.get("/")
+
 def home():
     return {
         "message": "Amazon Review Sentiment Analysis API is running"
     }
 
+@app.get("/health")
+def health_check():
+    return{
+        'status':'OK'
+    }
+
+  
+@app.get("/")
 class ProductRequest(BaseModel):
     product_url : HttpUrl
+
 
 @app.post("/scrape")
 def scrape_product(request:ProductRequest):
