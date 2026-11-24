@@ -22,8 +22,10 @@ if not snapshot_id:
 
 
 #Step 3:check if results are already available
-if "analysis_result" not in st.session_state:
-
+if (
+    "analysis_result" not in st.session_state
+    or st.session_state.get("analysis_snapshot_id") != snapshot_id
+):
     status_message = st.empty()
     status_message.info("Analyzing your product reviews")
 
@@ -39,6 +41,7 @@ if "analysis_result" not in st.session_state:
 
             if result["status"] == "completed":
                 st.session_state["analysis_result"] = result
+                st.session_state["analysis_snapshot_id"] = snapshot_id
                 break
 
             time.sleep(5)
