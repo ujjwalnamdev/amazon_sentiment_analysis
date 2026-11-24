@@ -57,6 +57,7 @@ result = st.session_state["analysis_result"]
 # Extract results
 reviews = result["results"]
 
+
 # Count sentiments
 total_reviews = len(reviews)
 
@@ -74,6 +75,7 @@ neutral_count = sum(
     1 for review in reviews
     if str(review["sentiment"]).lower() == "neutral"
 )
+
 
 # Extract valid ratings
 ratings = []
@@ -152,14 +154,32 @@ st.write("Total Reviews:", result["total_reviews"])
 
 st.divider()
 
-#Step 5:Display Individual reviews
-st.subheader("Customer_Reviews")
+def apply_filter(reviews):
+    selected_sentiment = st.selectbox(
+        "Filter Reviews by Sentiment",
+        ["All", "Positive", "Negative", "Neutral"]
+    )
 
-for review in result["results"]:
+    if selected_sentiment == "All":
+        return reviews
+
+    filtered_reviews = [
+        review for review in reviews
+        if str(review["sentiment"]).lower() == selected_sentiment.lower()
+    ]
+
+    return filtered_reviews
+
+
+# Step 5: Display Individual Reviews
+st.subheader("Customer Reviews")
+
+filtered_reviews = apply_filter(reviews)
+
+st.write(f"Showing {len(filtered_reviews)} reviews")
+
+for review in filtered_reviews:
     st.write("Rating:", review["rating"], "⭐")
-
     st.write("Review:", review["review"])
-
     st.write("Predicted_Sentiment:", review["sentiment"])
-
     st.divider()
