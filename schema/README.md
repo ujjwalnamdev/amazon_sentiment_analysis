@@ -1,6 +1,6 @@
 # Schema – API and Review Service
 
-This directory contains the schema definitions and service logic used by the backend of the Amazon Product Review Sentiment Analysis application.
+This directory contains the schema definitions and service logics used by the backend of the Amazon Product Review Sentiment Analysis application.
 
 ## Files
 
